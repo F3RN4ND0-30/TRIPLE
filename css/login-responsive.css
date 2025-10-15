@@ -1,0 +1,199 @@
+/* =====================================================
+   LOGIN RESPONSIVE - SINADECI
+   ===================================================== */
+
+/* ----- Base: Desktop (>=1025px) -----
+   Panel izquierdo y derecho en dos columnas */
+.contenedor-login {
+  display: flex;
+  min-height: 100vh;
+}
+
+.panel-izquierdo, 
+.panel-derecho {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+}
+
+/* =====================================================
+   Tablet Horizontal (≤ 1024px)
+   ===================================================== */
+@media (max-width: 1024px) {
+  .panel-izquierdo {
+    padding: 2.5rem 2rem;
+  }
+
+  .panel-derecho {
+    padding: 2.5rem 2rem;
+  }
+
+  .contenedor-formulario {
+    max-width: 500px;
+  }
+
+  .nombre-sistema {
+    font-size: 2.2rem;
+  }
+
+  .descripcion-sistema {
+    font-size: 1rem;
+  }
+}
+
+/* =====================================================
+   Tablet Vertical (≤ 768px)
+   ===================================================== */
+@media (max-width: 768px) {
+  .contenedor-login {
+    flex-direction: column;
+  }
+
+  .panel-izquierdo {
+    order: 1;
+    min-height: 35vh;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .panel-derecho {
+    order: 2;
+    min-height: 65vh;
+    padding: 2rem 1.5rem;
+  }
+
+  .contenedor-formulario {
+    max-width: 100%;
+  }
+
+  .encabezado-login {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .icono-pisco {
+    width: 60px;
+  }
+
+  .descripcion-acceso {
+    font-size: 0.9rem;
+  }
+}
+
+/* =====================================================
+   Móvil Horizontal (≤ 640px)
+   ===================================================== */
+@media (max-width: 640px) {
+  .panel-izquierdo {
+    padding: 1.5rem;
+  }
+
+  .panel-derecho {
+    padding: 1.5rem;
+  }
+
+  .nombre-sistema {
+    font-size: 1.8rem;
+  }
+
+  .descripcion-sistema {
+    font-size: 0.9rem;
+  }
+
+  .contenedor-formulario {
+    padding: 1.5rem;
+  }
+
+  .input-formulario {
+    font-size: 0.95rem;
+    height: 50px;
+  }
+
+  .boton-enviar {
+    font-size: 0.95rem;
+    height: 50px;
+  }
+}
+
+/* =====================================================
+   Móvil Vertical (≤ 480px)
+   ===================================================== */
+@media (max-width: 480px) {
+  .panel-izquierdo {
+    display: none; /* Ocultar panel izquierdo */
+  }
+
+  .panel-derecho {
+    flex: 1;
+    padding: 1.5rem 1rem;
+    min-height: 100vh;
+  }
+
+  .contenedor-formulario {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .encabezado-login {
+    text-align: center;
+  }
+
+  .descripcion-acceso {
+    font-size: 0.85rem;
+  }
+
+  .input-formulario {
+    font-size: 0.9rem;
+    height: 48px;
+  }
+
+  .boton-enviar {
+    height: 48px;
+    font-size: 0.9rem;
+  }
+
+  .info-sistema {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .divisor-info {
+    display: none;
+  }
+}
+
+/* =====================================================
+   Muy pequeño (≤ 360px)
+   ===================================================== */
+@media (max-width: 360px) {
+  .contenedor-formulario {
+    padding: 0.75rem;
+  }
+
+  .nombre-sistema {
+    font-size: 1.5rem;
+  }
+
+  .descripcion-acceso {
+    font-size: 0.8rem;
+  }
+
+  .input-formulario {
+    font-size: 0.85rem;
+    height: 44px;
+    padding-left: 2.5rem;
+  }
+
+  .revelar-password {
+    right: 0.7rem;
+  }
+
+  .boton-enviar {
+    height: 44px;
+    font-size: 0.85rem;
+  }
+}
