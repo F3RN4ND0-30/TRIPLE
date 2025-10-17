@@ -17,7 +17,7 @@ function confirmarLogout() {
     cancelButtonText: "Cancelar",
     reverseButtons: true,
   }).then((r) => {
-    if (r.isConfirmed) window.location.href = "../../frontend/logout.php";
+    if (r.isConfirmed) window.location.href = "../../../logout.php";
   });
 }
 
