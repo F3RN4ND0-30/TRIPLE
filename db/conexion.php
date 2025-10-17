@@ -1,58 +1,43 @@
 <?php
-// SINADECI - Conexión Simple que Funciona
+// conexion.php para SQL Server
+$serverName = "DESKTOP-V7Q6881\SQLEXPRESS"; // Cambia si usas una instancia: "localhost\\SQLEXPRESS"
+$connectionOptions = [
+    "Database" => "DB_RECEPCION",     // Tu base de datos
+    "Uid" => "saF",                // Tu usuario de SQL Server
+    "PWD" => "Muni1234",     // Tu contraseña
+    "CharacterSet" => "UTF-8"
+];
 
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'SINADECI';
+// Crear conexión
+$conexion = sqlsrv_connect($serverName, $connectionOptions);
 
-// Crear conexión MySQLi
-$conexion = new mysqli($host, $user, $pass, $db);
-
-// Verificar si hay error
-if ($conexion->connect_error) {
-    die("Conexión falló: " . $conexion->connect_error);
+if ($conexion === false) {
+    die(print_r(sqlsrv_errors(), true));
 }
 
-// Configurar UTF-8
-$conexion->set_charset("utf8mb4");
-
-// Funciones básicas
-function ejecutarConsulta($sql, $parametros = null)
+function ejecutarConsulta($sql, $params = [])
 {
     global $conexion;
-
-    if ($parametros) {
-        $stmt = $conexion->prepare($sql);
-        $stmt->bind_param(...$parametros);
-        $stmt->execute();
-        return $stmt;
-    } else {
-        return $conexion->query($sql);
+    $stmt = sqlsrv_prepare($conexion, $sql, $params);
+    if (!$stmt) {
+        die(print_r(sqlsrv_errors(), true));
     }
+    if (!sqlsrv_execute($stmt)) {
+        die(print_r(sqlsrv_errors(), true));
+    }
+    return $stmt;
 }
 
-function obtenerFilas($resultado)
+function obtenerFila($stmt)
 {
-    if (is_object($resultado) && method_exists($resultado, 'get_result')) {
-        $result = $resultado->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
-    } else {
-        return $resultado->fetch_all(MYSQLI_ASSOC);
-    }
+    return sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 }
 
-function obtenerFila($resultado)
+function obtenerFilas($stmt)
 {
-    if (is_object($resultado) && method_exists($resultado, 'get_result')) {
-        $result = $resultado->get_result();
-        return $result->fetch_assoc();
-    } else {
-        return $resultado->fetch_assoc();
+    $rows = [];
+    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+        $rows[] = $row;
     }
-}
-
-// Bloquear acceso directo
-if (basename($_SERVER['PHP_SELF']) === 'conexion.php') {
-    exit('Acceso denegado');
+    return $rows;
 }

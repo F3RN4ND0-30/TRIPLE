@@ -32,36 +32,36 @@ function obtenerEstadisticasDashboard($usuario_id)
 {
     // Total de certificaciones
     $sql_cert = "SELECT COUNT(*) as total FROM CERTIFICACIONES WHERE estado = '1'";
-    $result_cert = ejecutarConsulta($sql_cert, []);
+    $result_cert = ejecutarConsulta($sql_cert);
     $total_certificaciones = obtenerFila($result_cert)['total'] ?? 0;
 
     // Certificaciones del mes actual
     $sql_cert_mes = "SELECT COUNT(*) as total FROM CERTIFICACIONES 
-                     WHERE estado = '1' AND MONTH(fechaEmision) = MONTH(NOW()) 
-                     AND YEAR(fechaEmision) = YEAR(NOW())";
-    $result_cert_mes = ejecutarConsulta($sql_cert_mes, []);
+                     WHERE estado = '1' AND MONTH(fechaEmision) = MONTH(GETDATE()) 
+                     AND YEAR(fechaEmision) = YEAR(GETDATE())";
+    $result_cert_mes = ejecutarConsulta($sql_cert_mes);
     $cert_mes = obtenerFila($result_cert_mes)['total'] ?? 0;
 
     // Total de inspecciones
     $sql_insp = "SELECT COUNT(*) as total FROM INSPECCIONES WHERE estado = '1'";
-    $result_insp = ejecutarConsulta($sql_insp, []);
+    $result_insp = ejecutarConsulta($sql_insp);
     $total_inspecciones = obtenerFila($result_insp)['total'] ?? 0;
 
-    // Inspecciones pendientes
+    // Inspecciones pendientes (fecha futura o hoy)
     $sql_insp_pend = "SELECT COUNT(*) as total FROM INSPECCIONES 
-                      WHERE estado = '1' AND fechaInspeccion >= CURDATE()";
-    $result_insp_pend = ejecutarConsulta($sql_insp_pend, []);
+                      WHERE estado = '1' AND CAST(fechaInspeccion AS DATE) >= CAST(GETDATE() AS DATE)";
+    $result_insp_pend = ejecutarConsulta($sql_insp_pend);
     $insp_pendientes = obtenerFila($result_insp_pend)['total'] ?? 0;
 
     // Total de clientes
     $sql_clientes = "SELECT COUNT(*) as total FROM CLIENTES WHERE estado = '1'";
-    $result_clientes = ejecutarConsulta($sql_clientes, []);
+    $result_clientes = ejecutarConsulta($sql_clientes);
     $total_clientes = obtenerFila($result_clientes)['total'] ?? 0;
 
     // Licencias emitidas este año
     $sql_licencias = "SELECT COUNT(*) as total FROM LICENCIAS 
-                      WHERE estado = '1' AND YEAR(FechaLic) = YEAR(NOW())";
-    $result_licencias = ejecutarConsulta($sql_licencias, []);
+                      WHERE estado = '1' AND YEAR(FechaLic) = YEAR(GETDATE())";
+    $result_licencias = ejecutarConsulta($sql_licencias);
     $licencias_año = obtenerFila($result_licencias)['total'] ?? 0;
 
     return [
@@ -77,7 +77,7 @@ function obtenerEstadisticasDashboard($usuario_id)
 // Obtener actividad reciente
 function obtenerActividadReciente()
 {
-    $sql = "SELECT 
+    $sql = "SELECT TOP 5 
                 c.idCerti,
                 c.NmrCertificado,
                 c.fechaEmision,
@@ -88,15 +88,15 @@ function obtenerActividadReciente()
             INNER JOIN PERSONAS p ON cl.idPersona = p.idPersona
             INNER JOIN RIESGOS r ON c.idRiesgo = r.idRiesgo
             WHERE c.estado = '1'
-            ORDER BY c.fechaEmision DESC
-            LIMIT 5";
+            ORDER BY c.fechaEmision DESC";
 
-    return ejecutarConsulta($sql, []);
+    return ejecutarConsulta($sql);
 }
 
 $estadisticas = obtenerEstadisticasDashboard($usuario_id);
 $actividad_reciente = obtenerActividadReciente();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
