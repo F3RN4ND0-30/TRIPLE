@@ -56,12 +56,12 @@ function obtenerIP()
 
 function ipBloqueada($ip)
 {
-    $sql = "SELECT COUNT(*) as total FROM intentos_login 
-            WHERE ip_address = ? 
-            AND tipo = 'fallido' 
-            AND timestamp > DATE_SUB(NOW(), INTERVAL 5 MINUTE)";
+    $sql = "SELECT COUNT(*) as total FROM dbo.intentos_login 
+        WHERE ip_address = ? 
+        AND tipo = 'fallido' 
+        AND fecha_registro > DATEADD(MINUTE, -5, GETDATE())";
 
-    $resultado = ejecutarConsulta($sql, ["s", $ip]);
+    $resultado = ejecutarConsulta($sql, [$ip]);
     $fila = obtenerFila($resultado);
 
     if ($fila && $fila['total'] >= 5) {
@@ -77,7 +77,7 @@ function ipBloqueada($ip)
 function registrarIntentoEnBD($ip, $usuario, $tipo)
 {
     $sql = "INSERT INTO intentos_login (ip_address, usuario, tipo) VALUES (?, ?, ?)";
-    ejecutarConsulta($sql, ["sss", $ip, $usuario, $tipo]);
+    ejecutarConsulta($sql, [$ip, $usuario, $tipo]);
 }
 
 function obtenerRutaEscritorioPorRol($idTipoUsuario)
@@ -137,15 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax'])) {
     $usuario = trim($_POST['username'] ?? '');
     $clave = $_POST['password'] ?? '';
 
-    if ($bloqueado) {
-        responderJSON([
-            'success' => false,
-            'bloqueado' => true,
-            'error' => $error,
-            'tipo' => $bloqueado_ip ? 'ip' : 'usuario'
-        ]);
-    }
-
     if (empty($usuario) || empty($clave)) {
         responderJSON([
             'success' => false,
@@ -154,23 +145,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax'])) {
         ]);
     }
 
-    if (strlen($usuario) < 3 || strlen($clave) < 4) {
-        responderJSON([
-            'success' => false,
-            'error' => 'Usuario o contraseña muy cortos.',
-            'bloqueado' => false
-        ]);
-    }
+    // Consulta adaptada a SQL Server (puedes usar TOP 1 en vez de LIMIT)
+    $sql = "SELECT TOP 1 u.*, p.nombres, p.apePat, p.apeMat, tu.nombre as tipo_usuario 
+            FROM USUARIOS u 
+            INNER JOIN PERSONAS p ON u.idPersona = p.idPersona 
+            INNER JOIN TIPO_USUARIOS tu ON u.idTipoUsuario = tu.idTipo
+            WHERE u.usuario = ? AND u.estado = '1'";
 
-    // Consulta con MySQLi
-    $sql = "SELECT u.*, p.nombres, p.apePat, p.apeMat, tu.nombre as tipo_usuario 
-        FROM USUARIOS u 
-        INNER JOIN PERSONAS p ON u.idPersona = p.idPersona 
-        INNER JOIN TIPO_USUARIOS tu ON u.idTipoUsuario = tu.idTipo
-        WHERE u.usuario = ? AND u.estado = '1' 
-        LIMIT 1";
-
-    $resultado = ejecutarConsulta($sql, ["s", $usuario]);
+    $resultado = ejecutarConsulta($sql, [$usuario]);
     $usuarioDB = obtenerFila($resultado);
 
     $login_valido = false;
@@ -356,7 +338,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax'])) {
         </section>
     </main>
 
-    <script src="loginfunc/login.js"></script>
+    <script src="js/login.js"></script>
 </body>
 
 </html>
