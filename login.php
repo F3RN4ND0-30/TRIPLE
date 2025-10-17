@@ -80,6 +80,22 @@ function registrarIntentoEnBD($ip, $usuario, $tipo)
     ejecutarConsulta($sql, ["sss", $ip, $usuario, $tipo]);
 }
 
+function obtenerRutaEscritorioPorRol($idTipoUsuario)
+{
+    switch ((int)$idTipoUsuario) {
+        case 1: // Administrador
+            return 'menu.php';
+        case 2: // SINADECI
+            return '../sinadeci/frontend/sisvis/escritorio.php';
+        case 3: // SILIF
+            return '../silif/frontend/sisvis/escritorio.php';
+        case 4: // MPARTES
+            return '../mpartes/frontend/sisvis/escritorio.php';
+        default:
+            return null; // Si el rol no es reconocido
+    }
+}
+
 $ip_cliente = obtenerIP();
 
 if (isset($_SESSION["sinadeci_id"])) {
@@ -148,11 +164,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax'])) {
 
     // Consulta con MySQLi
     $sql = "SELECT u.*, p.nombres, p.apePat, p.apeMat, tu.nombre as tipo_usuario 
-            FROM USUARIOS u 
-            INNER JOIN PERSONAS p ON u.idPersona = p.idPersona 
-            INNER JOIN TIPO_USUARIOS tu ON u.idTipoUsuario = tu.idTipo
-            WHERE u.usuario = ? AND u.estado = '1' 
-            LIMIT 1";
+        FROM USUARIOS u 
+        INNER JOIN PERSONAS p ON u.idPersona = p.idPersona 
+        INNER JOIN TIPO_USUARIOS tu ON u.idTipoUsuario = tu.idTipo
+        WHERE u.usuario = ? AND u.estado = '1' 
+        LIMIT 1";
 
     $resultado = ejecutarConsulta($sql, ["s", $usuario]);
     $usuarioDB = obtenerFila($resultado);
@@ -180,9 +196,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax'])) {
 
         error_log("Login SINADECI exitoso: {$usuario} desde IP {$ip_cliente}");
 
+        $redirect = obtenerRutaEscritorioPorRol($usuarioDB['idTipoUsuario']);
+
+        if (!$redirect) {
+            responderJSON([
+                'success' => false,
+                'error' => 'Rol de usuario no reconocido. Contacte al administrador.'
+            ]);
+        }
+
         responderJSON([
             'success' => true,
-            'redirect' => 'sinadeci/frontend/sisvis/escritorio.php',
+            'redirect' => $redirect,
             'usuario' => $nombre_completo
         ]);
     } else {

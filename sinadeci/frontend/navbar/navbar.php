@@ -412,7 +412,7 @@ $tipo_usuario = $_SESSION['sinadeci_tipo'] ?? 'Usuario';
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item dropdown-item-custom logout-item" href="#" onclick="confirmarLogout()">
+                            <a class="dropdown-item dropdown-item-custom logout-item" href="logout.php" onclick="confirmarLogout()">
                                 <i class="fas fa-sign-out-alt dropdown-icon"></i>
                                 <div class="dropdown-content">
                                     <span class="dropdown-title">Cerrar Sesión</span>
