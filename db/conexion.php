@@ -1,10 +1,10 @@
 <?php
 // conexion.php para SQL Server
-$serverName = "DESKTOP-V7Q6881\SQLEXPRESS"; // Cambia si usas una instancia: "localhost\\SQLEXPRESS"
+$serverName = "DESKTOP-B340BGP\SQLEXPRESS"; 
 $connectionOptions = [
-    "Database" => "DB_RECEPCION",     // Tu base de datos
-    "Uid" => "saF",                // Tu usuario de SQL Server
-    "PWD" => "Muni1234",     // Tu contraseña
+    "Database" => "DB_RECEPCION",  
+    "Uid" => "sa",               
+    "PWD" => "admin1234",   
     "CharacterSet" => "UTF-8"
 ];
 
