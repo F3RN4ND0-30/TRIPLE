@@ -1,67 +1,586 @@
-/* ===== Fondo animado elegante para el panel izquierdo (CSS-only) ===== */
+/* =========================================================
+   TRIPLE — Login UI (limpio, moderno y responsivo)
+   Fondo animado (rombos + auroras) y halo sutil del logo
+   ========================================================= */
 
-/* Contenedor del lado izquierdo */
-.panel-izquierdo{
+/* ------------ Reset / Base ------------ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  /* Paleta */
+  --azul-900: #0f172a;
+  --azul-800: #16243d;
+  --azul-700: #1a2f4f;
+  --azul-600: #1e3a5f; /* principal */
+  --azul-500: #244a7a;
+  --gris-900: #0f172a;
+  --gris-800: #1f2937;
+  --gris-700: #334155;
+  --gris-600: #475569;
+  --gris-500: #64748b;
+  --gris-400: #94a3b8;
+  --gris-300: #cbd5e1;
+  --gris-200: #e2e8f0;
+  --gris-100: #f1f5f9;
+  --gris-50: #f8fafc;
+  --blanco: #ffffff;
+
+  /* Gradientes */
+  --grad-bg: linear-gradient(135deg, #12243d 0%, #183457 55%, #1e3a5f 100%);
+  --grad-btn: linear-gradient(135deg, #1e3a5f 0%, #244a7a 100%);
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 12px 26px rgba(0, 0, 0, 0.18);
+
+  /* Bordes / radios */
+  --r-xs: 6px;
+  --r: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
+
+  /* Tipografía */
+  --font: "Ubuntu", "Roboto", system-ui, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Transiciones */
+  --t-fast: 0.15s ease;
+  --t: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: var(--font);
+  background: var(--grad-bg);
+  color: var(--gris-800);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ------------ Layout ------------ */
+.contenedor-login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
   position: relative;
-  display:flex;align-items:center;justify-content:center;
-  padding:4rem 3rem;
-  /* color base por si no carga nada */
-  background:#0f1f36;
-  overflow:hidden;
-  isolation:isolate; /* para que los pseudo no afecten a hijos */
+}
+.panel-izquierdo {
+  position: relative;
+  padding: 4rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate; /* los pseudo no afectan hijos */
+}
+.contenido-izquierdo {
+  text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
-/* Capa 1: patrón de rombos que se desplaza muy suave */
-.panel-izquierdo::before{
-  content:"";
-  position:absolute; inset:-40px; /* extra para que al animar no se note el borde */
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M48 0l48 48-48 48L0 48z'/%3E%3C/g%3E%3C/svg%3E") repeat;
-  filter:saturate(110%);
+.logo-defensa-civil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.6rem;
+}
+
+/* ------------ Fondo animado elegante (CSS-only) ------------ */
+/* capa patrón rombos */
+.panel-izquierdo::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M48 0l48 48-48 48L0 48z'/%3E%3C/g%3E%3C/svg%3E")
+    repeat;
   animation: diamondsMove 36s linear infinite;
-  z-index:0;
-  opacity:.95; /* que se vea pero sin competir */
+  z-index: 0;
+  opacity: 0.95;
 }
-
-/* Capa 2: auroras (gradientes radiales que se mueven) */
-.panel-izquierdo::after{
-  content:"";
-  position:absolute; inset:-20%;
-  background:
-    radial-gradient(1200px 800px at 15% 20%, rgba(60,130,246,.18), transparent 60%),
-    radial-gradient(900px 700px at 85% 80%, rgba(255,180,90,.12), transparent 60%),
-    radial-gradient(1000px 900px at 70% 25%, rgba(46,213,166,.12), transparent 60%);
+/* capa auroras suaves */
+.panel-izquierdo::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(
+      1200px 800px at 15% 20%,
+      rgba(60, 130, 246, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 700px at 85% 80%,
+      rgba(255, 180, 90, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 900px at 70% 25%,
+      rgba(46, 213, 166, 0.12),
+      transparent 60%
+    );
   mix-blend-mode: screen;
   animation: auroraDrift 26s ease-in-out infinite;
-  z-index:1;
-  pointer-events:none;
+  z-index: 1;
+  pointer-events: none;
 }
-
-/* Capa 3 opcional: halo/spotlight que “respira” detrás del logo */
-.contenido-izquierdo::before{
-  content:"";
-  position:absolute; inset:0;
-  background:
-    radial-gradient(260px 260px at 50% 34%, rgba(255,255,255,.18), transparent 65%);
+/* halo que respira detrás del logo */
+.contenido-izquierdo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    260px 260px at 50% 34%,
+    rgba(255, 255, 255, 0.18),
+    transparent 65%
+  );
   animation: haloPulse 5.2s ease-in-out infinite;
-  z-index:0;
+  z-index: 0;
 }
 
-/* Ajuste para que el contenido quede por encima de los pseudo-elementos */
-.contenido-izquierdo{ position:relative; z-index:2 }
+/* Animaciones del fondo */
+@keyframes diamondsMove {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-48px, -48px, 0) scale(1.02);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+@keyframes auroraDrift {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-2%, -3%, 0) rotate(1.5deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+@keyframes haloPulse {
+  0%,
+  100% {
+    opacity: 0.75;
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 0.45;
+    filter: blur(1.5px);
+  }
+}
 
-/* Animaciones */
-@keyframes diamondsMove{
-  0%   { transform: translate3d(0,0,0) scale(1); }
-  50%  { transform: translate3d(-48px,-48px,0) scale(1.02); }
-  100% { transform: translate3d(0,0,0) scale(1); }
+/* ------------ Logo grande (izquierda) ------------ */
+.escudo-sinadeci {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: var(--blanco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.45);
+  position: relative;
+  isolation: isolate;
+  animation: float 4.2s ease-in-out infinite;
 }
-@keyframes auroraDrift{
-  0%   { transform: translate3d(0,0,0) rotate(0deg); }
-  50%  { transform: translate3d(-2%, -3%, 0) rotate(1.5deg); }
-  100% { transform: translate3d(0,0,0) rotate(0deg); }
+/* si usas FA */
+.escudo-sinadeci i {
+  font-size: 56px;
+  color: var(--azul-600);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15));
 }
-@keyframes haloPulse{
-  0%,100% { opacity:.75; filter: blur(0px);   }
-  50%     { opacity:.45; filter: blur(1.5px); }
+/* si usas IMG */
+.escudo-sinadeci img {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12));
+}
+
+.escudo-sinadeci::before,
+.escudo-sinadeci::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  inset: -10px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  animation: spin 36s linear infinite;
+}
+.escudo-sinadeci::after {
+  inset: -22px;
+  border-color: rgba(255, 255, 255, 0.12);
+  animation-duration: 48s;
+  animation-direction: reverse;
+}
+@keyframes float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nombre-sistema {
+  font-size: 4rem;
+  letter-spacing: 3px;
+  font-weight: 800;
+  color: var(--blanco);
+  text-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+}
+.descripcion-sistema {
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 1.15rem;
+  max-width: 420px;
+  line-height: 1.55;
+}
+
+/* ------------ Panel derecho (form) ------------ */
+.panel-derecho {
+  background: var(--blanco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.2rem 3rem;
+}
+.contenedor-formulario {
+  width: 100%;
+  max-width: 460px;
+}
+
+/* Encabezado del form */
+.encabezado-login {
+  text-align: center;
+  margin-bottom: 2.2rem;
+}
+.icono-acceso {
+  width: 108px;
+  height: 108px;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  background: var(--blanco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--azul-600);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+  position: relative;
+  overflow: hidden;
+}
+.icono-acceso::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(
+    140px 90px at 40% 30%,
+    rgba(30, 58, 95, 0.08),
+    transparent 60%
+  );
+}
+.icono-acceso i {
+  font-size: 44px;
+  color: var(--azul-600);
+}
+.descripcion-acceso {
+  color: var(--gris-700);
+  font-weight: 500;
+}
+
+/* ------------ Formulario ------------ */
+.formulario-login {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.grupo-input {
+  position: relative;
+}
+.envolvedor-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icono-input {
+  position: absolute;
+  left: 1rem;
+  color: var(--gris-400);
+  font-size: 1rem;
+  z-index: 3;
+  transition: var(--t-fast);
+}
+.input-formulario {
+  width: 100%;
+  height: 54px;
+  padding: 1rem 1rem 1rem 3.25rem;
+  border: 2px solid var(--gris-200);
+  border-radius: var(--r-lg);
+  font-size: 1rem;
+  background: var(--gris-50);
+  transition: var(--t);
+}
+.input-formulario::placeholder {
+  color: transparent;
+}
+.input-formulario:focus {
+  outline: none;
+  border-color: var(--azul-600);
+  background: var(--blanco);
+  box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.1);
+}
+.input-formulario:focus ~ .icono-input,
+.input-formulario:not(:placeholder-shown) ~ .icono-input {
+  color: var(--azul-600);
+}
+
+.etiqueta-input {
+  position: absolute;
+  left: 3.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gris-500);
+  font-weight: 600;
+  background: transparent;
+  padding: 0 0.45rem;
+  transition: var(--t);
+  pointer-events: none;
+}
+.input-formulario:focus ~ .etiqueta-input,
+.input-formulario:not(:placeholder-shown) ~ .etiqueta-input {
+  transform: translateY(-28px) scale(0.86);
+  color: var(--azul-600);
+  background: var(--blanco);
+}
+
+.revelar-password {
+  position: absolute;
+  right: 0.9rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--gris-400);
+  font-size: 1rem;
+  padding: 0.4rem;
+  transition: var(--t-fast);
+  z-index: 3;
+}
+.revelar-password:hover {
+  color: var(--azul-600);
+}
+
+.retroalimentacion-input {
+  display: none;
+  font-size: 0.82rem;
+  color: #d32f2f;
+  margin-top: 0.35rem;
+}
+.retroalimentacion-input.show {
+  display: block;
+}
+
+/* Estados de error */
+.input-formulario.error {
+  border-color: #e53e3e;
+  background: rgba(229, 62, 62, 0.05);
+  box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.08);
+}
+
+/* Opciones */
+.opciones-formulario {
+  margin: 0.25rem 0 0;
+}
+.checkbox-personalizado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  color: var(--gris-700);
+}
+.checkbox-personalizado input {
+  display: none;
+}
+.marca-checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--gris-300);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--t-fast);
+  background: var(--blanco);
+}
+.marca-checkbox i {
+  opacity: 0;
+  transform: scale(0);
+  transition: var(--t-fast);
+  color: #fff;
+  font-size: 0.7rem;
+}
+.checkbox-personalizado input:checked + .marca-checkbox {
+  background: var(--azul-600);
+  border-color: var(--azul-600);
+}
+.checkbox-personalizado input:checked + .marca-checkbox i {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Botón */
+.boton-enviar {
+  height: 54px;
+  border: 0;
+  border-radius: var(--r-lg);
+  color: #fff;
+  background: var(--grad-btn);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 8px 20px rgba(30, 58, 95, 0.25);
+  transition: var(--t);
+  margin-top: 0.6rem;
+  position: relative;
+  overflow: hidden;
+}
+.boton-enviar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(30, 58, 95, 0.32);
+}
+.boton-enviar:active {
+  transform: translateY(0);
+}
+.boton-enviar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.boton-enviar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.16),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.75s ease;
+}
+.boton-enviar:hover::after {
+  transform: translateX(100%);
+}
+.cargador-boton,
+.exito-boton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.cargador-boton {
+  opacity: 0;
+  transition: var(--t-fast);
+}
+.spinner-cargador {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.exito-boton {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: var(--t);
+}
+.boton-enviar.loading .contenido-boton {
+  opacity: 0;
+}
+.boton-enviar.loading .cargador-boton {
+  opacity: 1;
+}
+.boton-enviar.success .exito-boton {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Info inferior */
+.info-sistema {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.1rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--gris-200);
+  color: var(--gris-600);
+  font-size: 0.86rem;
+}
+.info-sistema i {
+  opacity: 0.8;
+}
+#tiempoActual {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--azul-600);
+}
+
+/* ------------ Responsivo ------------ */
+@media (max-width: 1024px) {
+  .contenedor-login {
+    grid-template-columns: 1fr;
+  }
+  .panel-izquierdo {
+    display: none;
+  }
+  .panel-derecho {
+    min-height: 100vh;
+    padding: 2.4rem;
+  }
+  .contenedor-formulario {
+    max-width: 480px;
+  }
+}
+@media (max-width: 480px) {
+  .icono-acceso {
+    width: 96px;
+    height: 96px;
+  }
+  .icono-acceso i {
+    font-size: 38px;
+  }
+  .input-formulario {
+    height: 50px;
+  }
+  .boton-enviar {
+    height: 50px;
+  }
+}
+
+/* Accesibilidad */
+:focus-visible {
+  outline: 3px solid rgba(30, 58, 95, 0.5);
+  outline-offset: 2px;
 }
